@@ -7,6 +7,12 @@ namespace HangStudent
 {
     class HangStudent
     {
+        //================================== VARIABLES =================================================
+        // string word = "";
+        // List<char> guessed;
+        // bool gameStarted = false;
+        // int tries = 0;
+
         static void Main(string[] args)
         => new HangStudent().MainAsync().GetAwaiter().GetResult();
 
@@ -28,6 +34,35 @@ namespace HangStudent
 
         private Task MessageHandler(SocketMessage msg)
         {
+            /*================================== BOT LOGIC HERE =================================================
+             *
+             * if msg == !start:
+             *      while word < 6, pick random string from wordlist and assign it to word
+             *      gameStarted = true
+             *      tries = 6
+             *      guessed = new List<char>()
+             * 
+             * else if gameStarted and msg is a single char:
+             *      char guess = msg
+             *      guessed.Add(guess)
+             *      if word contains guess:
+             *          send message showing progress so far, how many tries left
+             *      else:
+             *          send message showing progress, piece to hangman
+             *          tries--
+             *      
+             *      if tries == 0:
+             *          show game over and display the answer
+             *          gameStarted = false
+             *          word = ""
+             *      else if all correct letters guessed:
+             *          send message "you win!"
+             *          gamestarted = false
+             *          word = ""
+             *
+             *===================================================================================================
+             */
+
             return Task.CompletedTask;
         }
 
