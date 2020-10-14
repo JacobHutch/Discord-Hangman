@@ -9,19 +9,43 @@ namespace HangStudent {
 		private string[] phasePaths;
 
 		public void GameStart(GameInfo state) {
-			SendMessage(ref state, "Some text", true);
+			string text = "New word! You have "+state.startTurns+" guesses."
+			SendMessage(ref state, text, true);
 		}
 
-		public void CorrectGuess(ISocketMessageChannel channel) {
+		public void CorrectGuess(GameInfo state, char guess) {
+			string text = "'"+guess+"' is correct!";
+			SendMessage(ref state, text, true);
 		}
 
-		public void IncorrectGuess(ISocketMessageChannel channel) {
+		public void IncorrectGuess(GameInfo state, char guess) {
+			string text = "'"+guess+"' is not in the word.";
+			SendMessage(ref state, text, true);
 		}
 
-		public void Win(ISocketMessageChannel channel) {
+		public void Win(GameInfo state, char guess) {
+			string text = "'"+guess+"' is correct! The word is \""+state.word+"\".";
 		}
 
-		public void Loss(ISocketMessageChannel channel) {
+		public void Loss(GameInfo state, char guess) {
+			string text = "'"+guess+"' is not in the word. The word was \""+state.word+"\".";
+		}
+
+		private string BuildGuessStatus(int startTurns, int turns) {
+			string ret;
+			if (turns == startTurns) {
+				ret = "You have "+startTurns+" guesses.";
+			}
+			else {
+				ret = turns+"/"+startTurns+" ";
+				if (turns == 1) {
+					ret += " guess remains.";
+				}
+				else {
+					ret += " guesses remain.";
+				}
+			}
+			return ret;
 		}
 
 		private string SelectImage(int startTurns, int turns) {
@@ -42,7 +66,7 @@ namespace HangStudent {
 		}
 
 		/* build the string of blanks and guessed letters */
-		private string BuildWordLine(string word, char[] correctLetters, char[] wrongLetters) {
+		private string BuildWordStatus(string word, char[] correctLetters, char[] wrongLetters) {
 			string ret = "**";
 
 			/* blanks filled in with correct guesses */
@@ -74,8 +98,10 @@ namespace HangStudent {
 
 		private void SendMessage(ref GameInfo state, string text, bool showGame=false) {
 			if (showGame) {
-				state.channel.SendFileAsync(SelectImage(state.startTurns, state.turns),
-						text+"\n"+BuildWordLine(state.word, state.correctLetters, state.wrongLetters));
+				string newText = text;
+				newText += "\n"+BuildWordLine(state.word, state.correctLetters, state.wrongLetters);
+				newText += "; "+BuildGuessStatus(state.startTurns, state.turns);
+				state.channel.SendFileAsync(SelectImage(state.startTurns, state.turns), newText);
 			}
 			else {
 				state.channel.SendMessageAsync(text);
