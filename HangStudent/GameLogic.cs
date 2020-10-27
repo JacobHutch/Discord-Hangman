@@ -36,6 +36,7 @@ namespace HangStudent
 
     internal class GameLogic
     {
+        Display display = new Display();
         private Random randNum = new Random();
         private GameInfo info;
         private int turns;
@@ -84,6 +85,7 @@ namespace HangStudent
         {
             this.info = new GameInfo(this.channel, word, this.turns, new List<char>(), new List<char>(), new List<char>(alphabetStr.ToCharArray()));
             this.state = EngineState.Running;
+            display.GameStart(this.info);
         }
 
         public GameInfo GameTurn(char guess)
@@ -96,17 +98,20 @@ namespace HangStudent
                     if (this.info.word.Contains(guess))
                     {
                         this.info.correctLetters.Add(guess);
+                        display.CorrectGuess(this.info, guess);
                     }
                     else
                     {
                         this.info.wrongLetters.Add(guess);
                         this.info.turns -= 1;
+                        display.IncorrectGuess(this.info, guess);
                     }
                     this.info.remainingLetters.Remove(guess);
 
                     if (this.info.turns == 0)
                     {
                         this.state = EngineState.Switching;
+                        display.Loss(this.info, guess);
                     }
                 }
                 infoReturn = this.info;

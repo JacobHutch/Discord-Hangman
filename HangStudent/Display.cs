@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Collections.Generic;
 using Discord.WebSocket;
 
 namespace HangStudent {
@@ -9,7 +10,7 @@ namespace HangStudent {
 		private string[] phasePaths;
 
 		public void GameStart(GameInfo state) {
-			string text = "New word! You have "+state.startTurns+" guesses."
+            string text = "New word! You have " + state.initTurns + " guesses.";
 			SendMessage(ref state, text, true);
 		}
 
@@ -66,7 +67,7 @@ namespace HangStudent {
 		}
 
 		/* build the string of blanks and guessed letters */
-		private string BuildWordStatus(string word, char[] correctLetters, char[] wrongLetters) {
+		private string BuildWordStatus(string word, List<char> correctLetters, List<char> wrongLetters) {
 			string ret = "**";
 
 			/* blanks filled in with correct guesses */
@@ -88,10 +89,10 @@ namespace HangStudent {
 
 			/* list of incorrect guesses */
 			ret += "** (";
-			for (int i = 0; i < wrongLetters.Length - 1; ++i) {
+			for (int i = 0; i < wrongLetters.Count - 1; ++i) {
 				ret += wrongLetters[i] + ", ";
 			}
-			ret += wrongLetters[wrongLetters.Length - 1] + ")";
+			ret += wrongLetters[wrongLetters.Count - 1] + ")";
 
 			return ret;
 		}
@@ -99,9 +100,9 @@ namespace HangStudent {
 		private void SendMessage(ref GameInfo state, string text, bool showGame=false) {
 			if (showGame) {
 				string newText = text;
-				newText += "\n"+BuildWordLine(state.word, state.correctLetters, state.wrongLetters);
-				newText += "; "+BuildGuessStatus(state.startTurns, state.turns);
-				state.channel.SendFileAsync(SelectImage(state.startTurns, state.turns), newText);
+				newText += "\n"+BuildWordStatus(state.word, state.correctLetters, state.wrongLetters);
+				newText += "; "+BuildGuessStatus(state.initTurns, state.turns);
+				state.channel.SendFileAsync(SelectImage(state.initTurns, state.turns), newText);
 			}
 			else {
 				state.channel.SendMessageAsync(text);

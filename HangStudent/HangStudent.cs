@@ -10,10 +10,8 @@ namespace HangStudent
     class HangStudent
     {
         //================================== VARIABLES =================================================
+        private GameLogic game = new GameLogic();
         private string word = "";
-        private List<char> guessed;
-        private bool gameStarted = false;
-        private int tries = 0;
         private Random rand = new Random();
         private static string tmpPath = Directory.GetCurrentDirectory();
         private string wordlistPath = tmpPath.Substring(0, tmpPath.Length - 23) + "wordlist.txt";
@@ -75,9 +73,10 @@ namespace HangStudent
 
             string userMsg = msg.Content;
 
+            // Handles game start (selects word and sets up game info)
             if (userMsg.Equals("!start"))
             {
-                msg.Channel.SendMessageAsync("**(This should be a game start message)**");
+                //msg.Channel.SendMessageAsync("**(This should be a game start message)**");
 
                 while (word.Length < 6)
                 {
@@ -95,11 +94,16 @@ namespace HangStudent
                     file.Close();
                 }
 
-                gameStarted = true;
-                tries = 6;
-                guessed = new List<char>();
+                game.StartGames(msg.Channel, new string[]{word}, 6);
 
                 //msg.Channel.SendMessageAsync($@"(DEBUG) Word chosen: {word}");
+            }
+
+
+            // Handles user guess
+            else if (userMsg.Length == 1)
+            {
+                game.GameTurn(userMsg.ToCharArray()[0]);
             }
 
             //===================================================================================================
