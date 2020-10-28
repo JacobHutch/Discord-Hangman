@@ -5,7 +5,7 @@ using Discord.WebSocket;
 
 namespace HangStudent {
 	class Display {
-		// the program needs to be run from the right directory
+        //private string IMAGES_DIRECTORY = tmpPath.Substring(0, tmpPath.Length - 23) + "img/"; 
 		private string IMAGES_DIRECTORY = Directory.GetCurrentDirectory()+"/img/";
 		private string[] phasePaths;
         
@@ -23,21 +23,23 @@ namespace HangStudent {
 		}
 
 		public void CorrectGuess(GameInfo state, char guess) {
-			string text = "'"+guess+"' is correct!";
+			string text = "'**"+guess+"**' is **correct**!";
 			SendMessage(ref state, text, true);
 		}
 
 		public void IncorrectGuess(GameInfo state, char guess) {
-			string text = "'"+guess+"' is not in the word.";
+			string text = "'**"+guess+"**' is not in the word.";
 			SendMessage(ref state, text, true);
 		}
 
 		public void Win(GameInfo state, char guess) {
-			string text = "'"+guess+"' is correct! The word is \""+state.word+"\".";
+			string text = "'**"+guess+"**' is **correct**! The word is \"**"+state.word+"**\".";
+			SendMessage(ref state, text, false);
 		}
 
 		public void Loss(GameInfo state, char guess) {
-			string text = "'"+guess+"' is not in the word. The word was \""+state.word+"\".";
+			string text = "'**"+guess+"**' is not in the word. The word was \"**"+state.word+"**\".";
+			SendMessage(ref state, text, false);
 		}
 
 		private string BuildGuessStatus(int startTurns, int turns) {
@@ -46,7 +48,7 @@ namespace HangStudent {
 				ret = "You have "+startTurns+" guesses.";
 			}
 			else {
-				ret = turns+"/"+startTurns+" ";
+				ret = turns+"/"+startTurns;
 				if (turns == 1) {
 					ret += " guess remains.";
 				}
