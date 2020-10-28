@@ -8,9 +8,17 @@ namespace HangStudent {
 		// the program needs to be run from the right directory
 		private string IMAGES_DIRECTORY = Directory.GetCurrentDirectory()+"/img/";
 		private string[] phasePaths;
+        
+        public Display() {
+            // init hangman phase paths
+            phasePaths = new string[10];
+            for (int i = 0; i < 10; ++i) {
+                phasePaths[i] = IMAGES_DIRECTORY + "phase"+(i+1)+".png";
+            }
+        }
 
 		public void GameStart(GameInfo state) {
-            string text = "New word! You have " + state.initTurns + " guesses.";
+            string text = "New word!";
 			SendMessage(ref state, text, true);
 		}
 
@@ -86,13 +94,16 @@ namespace HangStudent {
 					ret += "\\_ ";
 				}
 			}
+            ret += "**";
 
 			/* list of incorrect guesses */
-			ret += "** (";
-			for (int i = 0; i < wrongLetters.Count - 1; ++i) {
-				ret += wrongLetters[i] + ", ";
-			}
-			ret += wrongLetters[wrongLetters.Count - 1] + ")";
+            if (wrongLetters.Count != 0) {
+                ret += " (";
+                for (int i = 0; i < wrongLetters.Count - 1; ++i) {
+                    ret += wrongLetters[i] + ", ";
+                }
+                ret += wrongLetters[wrongLetters.Count - 1] + ")";
+            }
 
 			return ret;
 		}
