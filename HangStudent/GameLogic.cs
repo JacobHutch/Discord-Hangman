@@ -68,7 +68,7 @@ namespace HangStudent
                     {
                         this.Round(word);
                     }
-                    this.state = EngineState.Waiting;
+                    //this.state = EngineState.Waiting;
                 }
             }
             else if (this.state == EngineState.Running)
@@ -98,21 +98,39 @@ namespace HangStudent
                     if (this.info.word.Contains(guess))
                     {
                         this.info.correctLetters.Add(guess);
-                        display.CorrectGuess(this.info, guess);
+
+                        bool wordComplete = true;
+                        foreach (char l in info.word) {
+                            if (!info.correctLetters.Contains(l)) {
+                                wordComplete = false;
+                                break;
+                            }
+                        }
+                        if (!wordComplete)
+                        {
+                            display.CorrectGuess(this.info, guess);
+                        }
+                        else
+                        {
+                            this.state = EngineState.Switching;
+                            display.Win(this.info, guess);
+                        }
                     }
                     else
                     {
                         this.info.wrongLetters.Add(guess);
                         this.info.turns -= 1;
-                        display.IncorrectGuess(this.info, guess);
+
+                        if (info.turns > 0) {
+                            display.IncorrectGuess(this.info, guess);
+                        }
+                        else
+                        {
+                            this.state = EngineState.Switching;
+                            display.Loss(this.info, guess);
+                        }
                     }
                     this.info.remainingLetters.Remove(guess);
-
-                    if (this.info.turns == 0)
-                    {
-                        this.state = EngineState.Switching;
-                        display.Loss(this.info, guess);
-                    }
                 }
                 infoReturn = this.info;
             }

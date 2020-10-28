@@ -14,7 +14,8 @@ namespace HangStudent
         private string word = "";
         private Random rand = new Random();
         private static string tmpPath = Directory.GetCurrentDirectory();
-        private string wordlistPath = tmpPath.Substring(0, tmpPath.Length - 23) + "wordlist.txt";
+        //private string wordlistPath = tmpPath.Substring(0, tmpPath.Length - 23) + "wordlist.txt";
+		private string wordlistPath = Directory.GetCurrentDirectory()+"/wordlist.txt";
         //==============================================================================================
 
         static void Main(string[] args)
@@ -94,7 +95,7 @@ namespace HangStudent
                     file.Close();
                 }
 
-                game.StartGames(msg.Channel, new string[]{word}, 6);
+                game.StartGames(msg.Channel, new string[]{word}, 7);
 
                 //msg.Channel.SendMessageAsync($@"(DEBUG) Word chosen: {word}");
             }
