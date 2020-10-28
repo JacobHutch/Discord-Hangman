@@ -14,7 +14,7 @@ namespace HangStudent
         public List<char> wrongLetters;
         public List<char> remainingLetters;
 
-        public GameInfo(ISocketMessageChannel channel, string word, int turns, List<char> correctLetters, List<char> wrongLetters, List<char> remainingLetters)
+        public GameInfo(ISocketMessageChannel channel, string word, int initTurns, int turns, List<char> correctLetters, List<char> wrongLetters, List<char> remainingLetters)
         {
             this.channel = channel;
             this.word = word;
@@ -34,7 +34,7 @@ namespace HangStudent
         Debug
     }
 
-    internal class GameLogic
+    class GameLogic
     {
         Display display = new Display();
         private Random randNum = new Random();
@@ -83,7 +83,7 @@ namespace HangStudent
 
         private void Round(string word)
         {
-            this.info = new GameInfo(this.channel, word, this.turns, new List<char>(), new List<char>(), new List<char>(alphabetStr.ToCharArray()));
+            this.info = new GameInfo(this.channel, word, this.turns, this.turns, new List<char>(), new List<char>(), new List<char>(alphabetStr.ToCharArray()));
             this.state = EngineState.Running;
             display.GameStart(this.info);
         }
