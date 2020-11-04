@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
@@ -11,11 +10,10 @@ namespace HangStudent
     {
         //================================== VARIABLES =================================================
         private GameLogic game = new GameLogic();
-        private string word = "";
-        private Random rand = new Random();
-        private static string tmpPath = Directory.GetCurrentDirectory();
-        //private string wordlistPath = tmpPath.Substring(0, tmpPath.Length - 23) + "wordlist.txt";
-		private string wordlistPath = Directory.GetCurrentDirectory()+"/wordlist.txt";
+        private WordSelect wordgen = new WordSelect();
+        private string word;
+        private SocketUser dmUser;
+        private ISocketMessageChannel originalChannel;
         //==============================================================================================
 
         static void Main(string[] args)
@@ -39,72 +37,76 @@ namespace HangStudent
 
         private Task MessageHandler(SocketMessage msg)
         {
-            /*====================================== PSEUDOCODE =================================================
-             *
-             * if msg == !start:
-             *      while word.length < 6, pick random string from wordlist and assign it to word
-             *      gameStarted = true
-             *      tries = 6
-             *      guessed = new List<char>()
-             * 
-             * else if gameStarted and msg is a single char:
-             *      char guess = msg
-             *      guessed.Add(guess)
-             *      if word contains guess:
-             *          send message showing progress so far, how many tries left
-             *      else:
-             *          send message showing progress, piece to hangman
-             *          tries--
-             *      
-             *      if tries == 0:
-             *          show game over and display the answer
-             *          gameStarted = false
-             *          word = ""
-             *      else if all correct letters guessed:
-             *          send message "you win!"
-             *          gamestarted = false
-             *          word = ""
-             *
-             *===================================================================================================
-             */
 
 
+            //======================================= Message Handling ==========================================
 
-            //======================================= BOT LOGIC HERE ============================================
-
-            string userMsg = msg.Content;
+            List<string> userMsg = new List<string>(msg.Content.Split(' '));
 
             // Handles game start (selects word and sets up game info)
-            if (userMsg.Equals("!start"))
+            if (userMsg[0].Equals("!start"))
             {
-                //msg.Channel.SendMessageAsync("**(This should be a game start message)**");
-
-                while (word.Length < 6)
+                if (userMsg.Count > 1)
                 {
-                    StreamReader file = new StreamReader(wordlistPath);
-
-                    int val = rand.Next() % 10000;
-                    for (int i = 1; i < val; i++)
+                    if (userMsg[1].Equals("r"))
                     {
-                        file.ReadLine();
+                        word = wordgen.pickRandom();
+                        msg.Channel.SendMessageAsync($@"(DEBUG) Word chosen: {word}");
+                        game.StartGames(msg.Channel, new string[]{ word }, 7);
                     }
+                    else if (userMsg[1].Equals("d"))
+                    {
+                        dmUser = msg.Author;
+                        originalChannel = msg.Channel;
+                        msg.Channel.SendMessageAsync("Waiting for word...");
+                    }
+                    else if (userMsg[1].Equals("q"))
+                    {
+                        if (userMsg.Count > 2)
+                        {
+                            word = wordgen.pickLink(msg, userMsg[2]);
+                            msg.Channel.SendMessageAsync($@"(DEBUG) Word chosen: {word}");
+                            game.StartGames(msg.Channel, new string[]{ word }, 7);
+                        }
 
-                    word = file.ReadLine();
-                    word.Substring(0, word.Length - 1);
-
-                    file.Close();
+                        // All statements below handle exceptions
+                        else
+                        {
+                            msg.Channel.SendMessageAsync("ERROR: Please include quizlet link");
+                        }
+                    }
+                    else
+                    {
+                        msg.Channel.SendMessageAsync("ERROR: Unrecognized game option");
+                    }
                 }
-
-                game.StartGames(msg.Channel, new string[]{word}, 7);
-
-                //msg.Channel.SendMessageAsync($@"(DEBUG) Word chosen: {word}");
+                else
+                {
+                    msg.Channel.SendMessageAsync("ERROR: Please include game option (r, d, q)");
+                }
             }
 
 
             // Handles user guess
-            else if (userMsg.Length == 1)
+            else if (userMsg[0].Length == 1 && userMsg.Count == 1)
             {
-                game.GameTurn(userMsg.ToCharArray()[0]);
+                game.GameTurn(userMsg[0][0]);
+            }
+
+
+            // Handles DM word selection
+            else if (msg.Author == dmUser && userMsg.Count == 1)
+            {
+                word = userMsg[0];
+                originalChannel.SendMessageAsync($@"(DEBUG) Word chosen: {word}");
+                game.StartGames(originalChannel, new string[]{ word }, 7);
+            }
+
+
+            // Lists commands for user
+            else if (userMsg[0].Equals("!commands"))
+            {
+                msg.Channel.SendMessageAsync("```- !start r : Starts game with random word\n- !start d : Starts game with word sent through DM to me\n- !start q (link) : Starts game with random term from quizlet link```");
             }
 
             //===================================================================================================

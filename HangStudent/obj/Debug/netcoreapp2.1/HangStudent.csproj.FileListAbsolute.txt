@@ -20,3 +20,4 @@ C:\Users\jacob\Desktop\Discord-Hangman\HangStudent\obj\Debug\netcoreapp2.1\HangS
 C:\Users\jacob\Desktop\Discord-Hangman\HangStudent\obj\Debug\netcoreapp2.1\HangStudent.dll
 C:\Users\jacob\Desktop\Discord-Hangman\HangStudent\obj\Debug\netcoreapp2.1\HangStudent.pdb
 C:\Users\jacob\Desktop\Discord-Hangman\HangStudent\obj\Debug\netcoreapp2.1\HangStudent.genruntimeconfig.cache
+D:\SCHOOL\CS321\HangStudent\HangStudent\obj\Debug\netcoreapp2.1\HangStudent.csprojAssemblyReference.cache
