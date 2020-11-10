@@ -39,6 +39,7 @@ namespace HangStudent
         Display display = new Display();
         private Random randNum = new Random();
         private GameInfo info;
+        private Scoreboard scores;
         private int turns;
         private const string alphabetStr = "abcdefghijklmnopqrstuvwxyz";
         private EngineState state = EngineState.Waiting;
@@ -46,7 +47,7 @@ namespace HangStudent
 
         public GameLogic()
         {
-
+          scores = new Scoreboard();
         }
 
         public void StartGames(ISocketMessageChannel channel, string[] words, int turns)
@@ -88,7 +89,7 @@ namespace HangStudent
             display.GameStart(this.info);
         }
 
-        public GameInfo GameTurn(char guess)
+        public GameInfo GameTurn(char guess, string username)
         {
             GameInfo infoReturn = new GameInfo();
             if (this.state == EngineState.Running)
@@ -98,6 +99,7 @@ namespace HangStudent
                     if (this.info.word.Contains(guess))
                     {
                         this.info.correctLetters.Add(guess);
+                        scores.AddCorrect(username);
 
                         bool wordComplete = true;
                         foreach (char l in info.word) {
@@ -114,12 +116,14 @@ namespace HangStudent
                         {
                             this.state = EngineState.Switching;
                             display.Win(this.info, guess);
+                            scores.AddWin(this.info.word);
                         }
                     }
                     else
                     {
                         this.info.wrongLetters.Add(guess);
                         this.info.turns -= 1;
+                        scores.AddIncorrect(username);
 
                         if (info.turns > 0) {
                             display.IncorrectGuess(this.info, guess);
@@ -128,12 +132,16 @@ namespace HangStudent
                         {
                             this.state = EngineState.Switching;
                             display.Loss(this.info, guess);
+                            scores.AddLoss();
                         }
                     }
                     this.info.remainingLetters.Remove(guess);
                 }
                 infoReturn = this.info;
             }
+            // TODO only for testing
+            display.Scores(info, scores);
+
             return infoReturn;
         }
 

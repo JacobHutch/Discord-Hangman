@@ -87,7 +87,7 @@ namespace HangStudent
             // Handles user guess
             else if (userMsg[0].Length == 1 && userMsg.Count == 1)
             {
-                game.GameTurn(userMsg[0][0]);
+                game.GameTurn(userMsg[0][0], msg.Author.Username);
             }
 
 
