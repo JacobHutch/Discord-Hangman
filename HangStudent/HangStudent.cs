@@ -12,8 +12,6 @@ namespace HangStudent
         private GameLogic game = new GameLogic();
         private WordSelect wordgen = new WordSelect();
         private string word;
-        private SocketUser dmUser;
-        private ISocketMessageChannel originalChannel;
         //==============================================================================================
 
         static void Main(string[] args)
@@ -51,40 +49,39 @@ namespace HangStudent
                     if (userMsg[1].Equals("r"))
                     {
                         word = wordgen.pickRandom();
-                        msg.Channel.SendMessageAsync($@"(DEBUG) Word chosen: {word}");
+                        //msg.Channel.SendMessageAsync($@"(DEBUG) Word chosen: {word}");
                         game.StartGames(msg.Channel, new string[]{ word }, 7);
                     }
-                    else if (userMsg[1].Equals("d"))
+                    else if (userMsg[1].Equals("c"))
                     {
-                        dmUser = msg.Author;
-                        originalChannel = msg.Channel;
-                        msg.Channel.SendMessageAsync("Waiting for word...");
+                        if (userMsg.Count > 2)
+                        {
+                            word = wordgen.getChosen(msg, userMsg[2]);
+                            //msg.Channel.SendMessageAsync($@"(DEBUG) Word chosen: {word}");
+                            game.StartGames(msg.Channel, new string[] { word }, 7);
+                        }
+                        else
+                        {
+                            msg.Channel.SendMessageAsync("ERROR: Please include chosen word, hidden with spoiler tags ( || )");
+                        }
                     }
                     else if (userMsg[1].Equals("q"))
                     {
                         if (userMsg.Count > 2)
                         {
                             word = wordgen.pickLink(msg, userMsg[2]);
-                            msg.Channel.SendMessageAsync($@"(DEBUG) Word chosen: {word}");
+                            //msg.Channel.SendMessageAsync($@"(DEBUG) Word chosen: {word}");
                             game.StartGames(msg.Channel, new string[]{ word }, 7);
                         }
 
-                        // All statements below handle exceptions
-                        else
-                        {
-                            msg.Channel.SendMessageAsync("ERROR: Please include quizlet link");
-                        }
+                        // All else statements below handle exceptions
+                        else { msg.Channel.SendMessageAsync("ERROR: Please include quizlet link"); }
                     }
-                    else
-                    {
-                        msg.Channel.SendMessageAsync("ERROR: Unrecognized game option");
-                    }
+                    else { msg.Channel.SendMessageAsync("ERROR: Unrecognized game option"); }
                 }
-                else
-                {
-                    msg.Channel.SendMessageAsync("ERROR: Please include game option (r, d, q)");
-                }
+                else { msg.Channel.SendMessageAsync("ERROR: Please include game option (r, c, q)"); }
             }
+
 
 
             // Handles user guess
@@ -94,19 +91,11 @@ namespace HangStudent
             }
 
 
-            // Handles DM word selection
-            else if (msg.Author == dmUser && userMsg.Count == 1)
-            {
-                word = userMsg[0];
-                originalChannel.SendMessageAsync($@"(DEBUG) Word chosen: {word}");
-                game.StartGames(originalChannel, new string[]{ word }, 7);
-            }
-
 
             // Lists commands for user
             else if (userMsg[0].Equals("!commands"))
             {
-                msg.Channel.SendMessageAsync("```- !start r : Starts game with random word\n- !start d : Starts game with word sent through DM to me\n- !start q (link) : Starts game with random term from quizlet link```");
+                msg.Channel.SendMessageAsync("```- !start r : Starts game with random word\n- !start c ||(word)|| : Starts game with chosen hidden word\n- !start q (link) : Starts game with random term from quizlet link```");
             }
 
             //===================================================================================================

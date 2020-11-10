@@ -42,10 +42,11 @@ namespace HangStudent
         }
         //=========================================================================================================================
 
-
+        //================================== VARIABLES =================================================
         //private static string tmpPath = Directory.GetCurrentDirectory();
         //private string wordlistPath = tmpPath.Substring(0, tmpPath.Length - 23) + "wordlist.txt";
         private string wordlistPath = Directory.GetCurrentDirectory() + "/wordlist.txt";
+        //==============================================================================================
 
         public WordSelect() { }
 
@@ -76,6 +77,33 @@ namespace HangStudent
         }
         //=========================================================================================================================
 
+
+        //====================================== Gets chosen word from user and hides it ==========================================
+        public string getChosen(SocketMessage msg, string chosen)
+        {
+            string word = "";
+            int len = chosen.Length;
+            
+            if (chosen[0] == '|' && chosen[1] == '|' && chosen[len-1] == '|' && chosen[len-2] == '|')
+            {
+                if (!hasIllegalChar( chosen.Substring(2, len-4) ))
+                {
+                    word = chosen.Substring(2, len - 4);
+                    msg.DeleteAsync();
+                }
+                else
+                {
+                    msg.Channel.SendMessageAsync("Error: Word has illegal characters in it");
+                }
+            }
+            else
+            {
+                msg.Channel.SendMessageAsync("Error: Put spoiler tags around your word ( || )");
+            }
+
+            return word;
+        }
+        //=========================================================================================================================
 
 
         //========================================= Get random word from quizlet link =============================================
