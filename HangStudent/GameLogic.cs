@@ -112,8 +112,8 @@ namespace HangStudent
                         }
                         else
                         {
-                            this.state = EngineState.Switching;
                             display.Win(this.info, guess);
+                            this.state = EngineState.Waiting;
                         }
                     }
                     else
@@ -126,8 +126,8 @@ namespace HangStudent
                         }
                         else
                         {
-                            this.state = EngineState.Switching;
                             display.Loss(this.info, guess);
+                            this.state = EngineState.Waiting;
                         }
                     }
                     this.info.remainingLetters.Remove(guess);
