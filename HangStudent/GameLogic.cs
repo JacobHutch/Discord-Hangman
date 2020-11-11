@@ -139,8 +139,6 @@ namespace HangStudent
                 }
                 infoReturn = this.info;
             }
-            // TODO only for testing
-            display.Scores(info, scores);
 
             return infoReturn;
         }
@@ -148,6 +146,10 @@ namespace HangStudent
         public EngineState RequestEngineState()
         {
             return this.state;
+        }
+
+        public void Scores(ISocketMessageChannel channel, string username) {
+            display.Scores(channel, scores, username);
         }
     }
 }

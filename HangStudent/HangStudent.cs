@@ -25,7 +25,8 @@ namespace HangStudent
             _client.MessageReceived += MessageHandler;
             _client.Log += Log;
 
-            string token = "NzYyODM0MDEzMDkzNzU2OTUy.X3u6iQ.BpIPlyoNUJFEXw_FQLrqu5hzMwE";
+            //string token = "NzYyODM0MDEzMDkzNzU2OTUy.X3u6iQ.BpIPlyoNUJFEXw_FQLrqu5hzMwE";
+            string token = "NzU1MTk0NTU4MDYwNTYwNDI0.X1_vvQ.KfW_8mcgZ8R1SFDGr2WG0YX2U2Q";
 
             await _client.LoginAsync(TokenType.Bot, token);
             await _client.StartAsync();
@@ -89,13 +90,14 @@ namespace HangStudent
             {
                 game.GameTurn(userMsg[0][0], msg.Author.Username);
             }
-
-
-
+            // print out player and game stats
+            else if (userMsg[0].Equals("!score")) {
+                game.Scores(msg.Channel, msg.Author.Username);
+            }
             // Lists commands for user
             else if (userMsg[0].Equals("!commands"))
             {
-                msg.Channel.SendMessageAsync("```- !start r : Starts game with random word\n- !start c ||(word)|| : Starts game with chosen hidden word\n- !start q (link) : Starts game with random term from quizlet link```");
+                msg.Channel.SendMessageAsync("```- !start r : Starts game with random word\n- !start c ||(word)|| : Starts game with chosen hidden word\n- !start q (link) : Starts game with random term from quizlet link\n- !score : Show a scoreboard and stats about past games```");
             }
 
             //===================================================================================================

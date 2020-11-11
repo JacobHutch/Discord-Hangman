@@ -42,8 +42,8 @@ namespace HangStudent {
 			SendMessage(ref state, text, false);
 		}
 
-		public void Scores(GameInfo state, Scoreboard scores) {
-			SendScores(ref state, ref scores.GetStats());
+		public void Scores(ISocketMessageChannel channel, Scoreboard scores, string username) {
+			SendScores(channel, ref scores.GetStats());
 		}
 
 		private string BuildGuessStatus(int startTurns, int turns) {
@@ -126,8 +126,9 @@ namespace HangStudent {
 			}
 		}
 
-		private void SendScores(ref GameInfo state, ref Stats stats) {
-			state.channel.SendMessageAsync("player 0 correct guesses: "+stats.players[0].correct);
+		private void SendScores(ISocketMessageChannel channel, ref Stats stats) {
+            if (stats.players.Count > 0)
+                channel.SendMessageAsync("player 0 correct guesses: "+stats.players[0].correct);
 		}
 	}
 }
