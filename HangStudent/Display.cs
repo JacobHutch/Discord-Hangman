@@ -5,20 +5,24 @@ using Discord.WebSocket;
 
 namespace HangStudent {
 	class Display {
-        //private string IMAGES_DIRECTORY = tmpPath.Substring(0, tmpPath.Length - 23) + "img/"; 
+		//private string IMAGES_DIRECTORY = tmpPath.Substring(0, tmpPath.Length - 23) + "img/"; 
 		private string IMAGES_DIRECTORY = Directory.GetCurrentDirectory()+"/img/";
 		private string[] phasePaths;
-        
-        public Display() {
-            // init hangman phase paths
-            phasePaths = new string[10];
-            for (int i = 0; i < 10; ++i) {
-                phasePaths[i] = IMAGES_DIRECTORY + "phase"+(i+1)+".png";
-            }
-        }
 
-		public void GameStart(GameInfo state) {
-            string text = "New word!";
+		public Display() {
+			// init hangman phase paths
+			phasePaths = new string[10];
+			for (int i = 0; i < 10; ++i) {
+				phasePaths[i] = IMAGES_DIRECTORY + "phase"+(i+1)+".png";
+			}
+		}
+
+		public void GameStart(GameInfo state, string wordDef=null) {
+			string text = "New word!";
+			if (wordDef != null) {
+				// flashcard definition
+				text += " The hint is:\n> "+wordDef;
+			}
 			SendMessage(ref state, text, true);
 		}
 
@@ -82,35 +86,35 @@ namespace HangStudent {
 
 			/* blanks filled in with correct guesses */
 			foreach (char c in word) {
-        if (alphabet.Contains(c)) {
-          bool found = false;
-          foreach (char guess in correctLetters) {
-            if (guess == c) {
-              found = true;
-              break;
-            }
-          }
-          if (found) {
-            ret += c + " "; // guessed letter
-          }
-          else {
-            ret += "\\_ "; // unguessed letter
-          }
-        }
-        else {
-          ret += "**"+c+"** "; // unguessable character
-        }
+				if (alphabet.Contains(c)) {
+					bool found = false;
+					foreach (char guess in correctLetters) {
+						if (guess == c) {
+							found = true;
+							break;
+						}
+					}
+					if (found) {
+						ret += c + " "; // guessed letter
+					}
+					else {
+						ret += "\\_ "; // unguessed letter
+					}
+				}
+				else {
+					ret += "**"+c+"** "; // unguessable character
+				}
 			}
-            ret += "**";
+			ret += "**";
 
 			/* list of incorrect guesses */
-            if (wrongLetters.Count != 0) {
-                ret += " (";
-                for (int i = 0; i < wrongLetters.Count - 1; ++i) {
-                    ret += wrongLetters[i] + ", ";
-                }
-                ret += wrongLetters[wrongLetters.Count - 1] + ")";
-            }
+			if (wrongLetters.Count != 0) {
+				ret += " (";
+				for (int i = 0; i < wrongLetters.Count - 1; ++i) {
+					ret += wrongLetters[i] + ", ";
+				}
+				ret += wrongLetters[wrongLetters.Count - 1] + ")";
+			}
 
 			return ret;
 		}
