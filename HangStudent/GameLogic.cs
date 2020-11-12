@@ -41,6 +41,7 @@ namespace HangStudent
         Display display = new Display();
         private Random randNum = new Random();
         private GameInfo info;
+        private Scoreboard scores = new Scoreboard();
         private int turns;
         private const string alphabetStr = "abcdefghijklmnopqrstuvwxyz";
         private EngineState state = EngineState.Waiting;
@@ -48,7 +49,6 @@ namespace HangStudent
 
         public GameLogic()
         {
-
         }
 
         public void StartGames(ISocketMessageChannel channel, string[] words, int turns)
@@ -90,7 +90,7 @@ namespace HangStudent
             display.GameStart(this.info);
         }
 
-        public GameInfo GameTurn(char guess)
+        public GameInfo GameTurn(char guess, string username)
         {
             GameInfo infoReturn = new GameInfo();
             if (this.state == EngineState.Running)
@@ -100,6 +100,7 @@ namespace HangStudent
                     if (this.info.word.Contains(guess))
                     {
                         this.info.correctLetters.Add(guess);
+                        scores.AddCorrect(username);
 
                         bool wordComplete = true;
                         foreach (char c in info.word) {
@@ -116,6 +117,7 @@ namespace HangStudent
                         else
                         {
                             display.Win(this.info, guess);
+                            scores.AddWin(this.info.word);
                             this.state = EngineState.Waiting;
                         }
                     }
@@ -123,6 +125,7 @@ namespace HangStudent
                     {
                         this.info.wrongLetters.Add(guess);
                         this.info.turns -= 1;
+                        scores.AddIncorrect(username);
 
                         if (info.turns > 0) {
                             display.IncorrectGuess(this.info, guess);
@@ -130,6 +133,7 @@ namespace HangStudent
                         else
                         {
                             display.Loss(this.info, guess);
+                            scores.AddLoss();
                             this.state = EngineState.Waiting;
                         }
                     }
@@ -137,12 +141,17 @@ namespace HangStudent
                 }
                 infoReturn = this.info;
             }
+
             return infoReturn;
         }
 
         public EngineState RequestEngineState()
         {
             return this.state;
+        }
+
+        public void Scores(ISocketMessageChannel channel, string username) {
+            display.Scores(channel, scores, username);
         }
     }
 }
