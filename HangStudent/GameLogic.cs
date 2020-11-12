@@ -13,8 +13,9 @@ namespace HangStudent
         public List<char> correctLetters;
         public List<char> wrongLetters;
         public List<char> remainingLetters;
+        public string alphabet;
 
-        public GameInfo(ISocketMessageChannel channel, string word, int initTurns, int turns, List<char> correctLetters, List<char> wrongLetters, List<char> remainingLetters)
+        public GameInfo(ISocketMessageChannel channel, string word, int initTurns, int turns, List<char> correctLetters, List<char> wrongLetters, List<char> remainingLetters, string alphabet)
         {
             this.channel = channel;
             this.word = word;
@@ -23,6 +24,7 @@ namespace HangStudent
             this.correctLetters = correctLetters;
             this.wrongLetters = wrongLetters;
             this.remainingLetters = remainingLetters;
+            this.alphabet = alphabet;
         }
     }
 
@@ -83,7 +85,7 @@ namespace HangStudent
 
         private void Round(string word)
         {
-            this.info = new GameInfo(this.channel, word, this.turns, this.turns, new List<char>(), new List<char>(), new List<char>(alphabetStr.ToCharArray()));
+            this.info = new GameInfo(this.channel, word, this.turns, this.turns, new List<char>(), new List<char>(), new List<char>(alphabetStr.ToCharArray()), alphabetStr);
             this.state = EngineState.Running;
             display.GameStart(this.info);
         }
@@ -100,8 +102,9 @@ namespace HangStudent
                         this.info.correctLetters.Add(guess);
 
                         bool wordComplete = true;
-                        foreach (char l in info.word) {
-                            if (!info.correctLetters.Contains(l)) {
+                        foreach (char c in info.word) {
+                            if (alphabetStr.Contains(c)
+                                    && !info.correctLetters.Contains(c)) {
                                 wordComplete = false;
                                 break;
                             }

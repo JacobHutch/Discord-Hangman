@@ -77,24 +77,29 @@ namespace HangStudent {
 		}
 
 		/* build the string of blanks and guessed letters */
-		private string BuildWordStatus(string word, List<char> correctLetters, List<char> wrongLetters) {
+		private string BuildWordStatus(string word, List<char> correctLetters, List<char> wrongLetters, string alphabet) {
 			string ret = "**";
 
 			/* blanks filled in with correct guesses */
 			foreach (char c in word) {
-				bool found = false;
-				foreach (char guess in correctLetters) {
-					if (guess == c) {
-						found = true;
-						break;
-					}
-				}
-				if (found) {
-					ret += c + " ";
-				}
-				else {
-					ret += "\\_ ";
-				}
+        if (alphabet.Contains(c)) {
+          bool found = false;
+          foreach (char guess in correctLetters) {
+            if (guess == c) {
+              found = true;
+              break;
+            }
+          }
+          if (found) {
+            ret += c + " "; // guessed letter
+          }
+          else {
+            ret += "\\_ "; // unguessed letter
+          }
+        }
+        else {
+          ret += "**"+c+"** "; // unguessable character
+        }
 			}
             ret += "**";
 
@@ -113,7 +118,7 @@ namespace HangStudent {
 		private void SendMessage(ref GameInfo state, string text, bool showGame=false) {
 			if (showGame) {
 				string newText = text;
-				newText += "\n"+BuildWordStatus(state.word, state.correctLetters, state.wrongLetters);
+				newText += "\n"+BuildWordStatus(state.word, state.correctLetters, state.wrongLetters, state.alphabet);
 				newText += "; "+BuildGuessStatus(state.initTurns, state.turns);
 				state.channel.SendFileAsync(SelectImage(state.initTurns, state.turns), newText);
 			}
