@@ -5,20 +5,20 @@ using Discord.WebSocket;
 
 namespace HangStudent {
 	class Display {
-        //private string IMAGES_DIRECTORY = tmpPath.Substring(0, tmpPath.Length - 23) + "img/"; 
+				//private string IMAGES_DIRECTORY = tmpPath.Substring(0, tmpPath.Length - 23) + "img/"; 
 		private string IMAGES_DIRECTORY = Directory.GetCurrentDirectory()+"/img/";
 		private string[] phasePaths;
-        
-        public Display() {
-            // init hangman phase paths
-            phasePaths = new string[10];
-            for (int i = 0; i < 10; ++i) {
-                phasePaths[i] = IMAGES_DIRECTORY + "phase"+(i+1)+".png";
-            }
-        }
+				
+				public Display() {
+						// init hangman phase paths
+						phasePaths = new string[10];
+						for (int i = 0; i < 10; ++i) {
+								phasePaths[i] = IMAGES_DIRECTORY + "phase"+(i+1)+".png";
+						}
+				}
 
 		public void GameStart(GameInfo state) {
-            string text = "New word!";
+						string text = "New word!";
 			SendMessage(ref state, text, true);
 		}
 
@@ -40,6 +40,10 @@ namespace HangStudent {
 		public void Loss(GameInfo state, char guess) {
 			string text = "'**"+guess+"**' is not in the word. The word was \"**"+state.word+"**\".";
 			SendMessage(ref state, text, false);
+		}
+
+		public void Scores(ISocketMessageChannel channel, Scoreboard scores, string username) {
+			SendScores(channel, ref scores.GetStats());
 		}
 
 		private string BuildGuessStatus(int startTurns, int turns) {
@@ -101,16 +105,16 @@ namespace HangStudent {
           ret += "**"+c+"** "; // unguessable character
         }
 			}
-            ret += "**";
+			ret += "**";
 
 			/* list of incorrect guesses */
-            if (wrongLetters.Count != 0) {
-                ret += " (";
-                for (int i = 0; i < wrongLetters.Count - 1; ++i) {
-                    ret += wrongLetters[i] + ", ";
-                }
-                ret += wrongLetters[wrongLetters.Count - 1] + ")";
-            }
+			if (wrongLetters.Count != 0) {
+				ret += " (";
+				for (int i = 0; i < wrongLetters.Count - 1; ++i) {
+					ret += wrongLetters[i] + ", ";
+				}
+				ret += wrongLetters[wrongLetters.Count - 1] + ")";
+			}
 
 			return ret;
 		}
@@ -127,5 +131,9 @@ namespace HangStudent {
 			}
 		}
 
+		private void SendScores(ISocketMessageChannel channel, ref Stats stats) {
+            if (stats.players.Count > 0)
+                channel.SendMessageAsync("player 0 correct guesses: "+stats.players[0].correct);
+		}
 	}
 }
