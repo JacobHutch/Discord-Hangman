@@ -69,9 +69,9 @@ namespace HangStudent
                     {
                         if (userMsg.Count > 2)
                         {
-                            word = wordgen.pickLink(msg, userMsg[2]);
+                            string[] term = wordgen.pickLink(msg, userMsg[2]);
                             //msg.Channel.SendMessageAsync($@"(DEBUG) Word chosen: {word}");
-                            game.StartGames(msg.Channel, new string[]{ word }, 7);
+                            game.StartGames(msg.Channel, new string[]{ term[0] }, 7, new string[] { term[1] });
                         }
 
                         // All else statements below handle exceptions
