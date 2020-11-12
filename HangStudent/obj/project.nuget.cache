@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Yv6MKd0PwJSKtvfst+ybWd1NtL6uHwu3AzoeOo2dpUZ5TcntkNlNGBbavdFvtR8+vIvP6chco8pCAHTTeP4NfQ==",
+  "dgSpecHash": "v5TR/SYyj5/GkbJA/WE1QyIfGv/iwzex9NRcPPMyYtW7r2Au5DcFIl8+FuFS/3YABfWdalHr1nfArwey38afAw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\jacob\\Desktop\\Discord-Hangman\\HangStudent\\HangStudent.csproj",
+  "projectFilePath": "C:\\Users\\jacob\\Desktop\\Git\\Discord-Hangman\\HangStudent\\HangStudent.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\jacob\\.nuget\\packages\\discord.net\\2.2.0\\discord.net.2.2.0.nupkg.sha512",
     "C:\\Users\\jacob\\.nuget\\packages\\discord.net.commands\\2.2.0\\discord.net.commands.2.2.0.nupkg.sha512",

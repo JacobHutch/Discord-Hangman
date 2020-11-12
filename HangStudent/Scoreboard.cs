@@ -37,9 +37,27 @@ namespace HangStudent {
 			p.score += 1;
 		}
 
-		public void AddIncorrect(string playerName) {}
-		public void AddWin(string word) {} // update counters and best word
-		public void AddLoss() {}
+		public void AddIncorrect(string playerName) {
+			PlayerStats p = GetPlayer(playerName);
+			p.incorrect += 1;
+		}
+		public void AddWin(string word) // update counters and best word
+		{
+			stats.wins += 1;
+			stats.rounds += 1;
+			if (stats.bestWord == null)
+            {
+				stats.bestWord = word;
+            }
+			else if (word.Length >= stats.bestWord.Length)
+            {
+				stats.bestWord = word;
+            }
+		}
+		public void AddLoss() {
+			stats.losses += 1;
+			stats.rounds += 1;
+		}
 		public ref Stats GetStats() {
 			return ref stats;
 		}

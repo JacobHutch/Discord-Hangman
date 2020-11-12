@@ -43,7 +43,7 @@ namespace HangStudent {
 		}
 
 		public void Scores(ISocketMessageChannel channel, Scoreboard scores, string username) {
-			SendScores(channel, ref scores.GetStats());
+			SendScores(channel, ref scores.GetStats(), username);
 		}
 
 		private string BuildGuessStatus(int startTurns, int turns) {
@@ -131,9 +131,29 @@ namespace HangStudent {
 			}
 		}
 
-		private void SendScores(ISocketMessageChannel channel, ref Stats stats) {
-            if (stats.players.Count > 0)
-                channel.SendMessageAsync("player 0 correct guesses: "+stats.players[0].correct);
+		private void SendScores(ISocketMessageChannel channel, ref Stats stats, string username) {
+			//Check for the player's name, if player exists then index will be >= 0, otherwise -1
+			int userIndex = -1;
+			foreach (PlayerStats user in stats.players) {
+				if (user.name == username)
+                {
+					userIndex = stats.players.IndexOf(user);
+                }
+            }
+
+			//If player exists, print player stats and total, if not just print total stats
+			if (userIndex >= 0)
+			{
+				channel.SendMessageAsync("**" + stats.players[userIndex].name + " Stats**\n" + "Correct: " + stats.players[userIndex].correct +
+					"\nIncorrect: " + stats.players[userIndex].incorrect + "\nScore: " + stats.players[userIndex].score + "\n\n" +
+					"**Total Stats**\n" + "Wins: " + stats.wins + "\nLosses: " + stats.losses +
+					"\nRounds: " + stats.rounds + "\nBest Word: " + stats.bestWord);
+			}
+			else
+			{
+				channel.SendMessageAsync("**Total Stats**\n" + "Wins: " + stats.wins + "\nLosses: " + stats.losses +
+					"\nRounds: " + stats.rounds + "\nBest Word: " + stats.bestWord);
+			}
 		}
 	}
 }

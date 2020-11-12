@@ -41,7 +41,7 @@ namespace HangStudent
         Display display = new Display();
         private Random randNum = new Random();
         private GameInfo info;
-        private Scoreboard scores;
+        private Scoreboard scores = new Scoreboard();
         private int turns;
         private const string alphabetStr = "abcdefghijklmnopqrstuvwxyz";
         private EngineState state = EngineState.Waiting;
@@ -49,7 +49,6 @@ namespace HangStudent
 
         public GameLogic()
         {
-          scores = new Scoreboard();
         }
 
         public void StartGames(ISocketMessageChannel channel, string[] words, int turns)
