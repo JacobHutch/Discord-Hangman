@@ -51,7 +51,7 @@ namespace HangStudent
         {
         }
 
-        public void StartGames(ISocketMessageChannel channel, string[] words, int turns)
+        public void StartGames(ISocketMessageChannel channel, string[] words, int turns, string[] wordDefs=null)
         {
             if (this.state == EngineState.Waiting)
             {
@@ -66,9 +66,15 @@ namespace HangStudent
                 {
                     this.state = EngineState.Switching;
 
-                    foreach (string word in words)
+                    for (int i = 0; i < words.Length; ++i)
                     {
-                        this.Round(word);
+                        if (wordDefs != null) {
+                            // flashcard hint
+                            this.Round(words[i], wordDefs[i]);
+                        }
+                        else {
+                            this.Round(words[i]);
+                        }
                     }
                     //this.state = EngineState.Waiting;
                 }
@@ -83,11 +89,11 @@ namespace HangStudent
             }
         }
 
-        private void Round(string word)
+        private void Round(string word, string wordDef=null)
         {
             this.info = new GameInfo(this.channel, word, this.turns, this.turns, new List<char>(), new List<char>(), new List<char>(alphabetStr.ToCharArray()), alphabetStr);
             this.state = EngineState.Running;
-            display.GameStart(this.info);
+            display.GameStart(this.info, wordDef);
         }
 
         public GameInfo GameTurn(char guess, string username)

@@ -107,12 +107,14 @@ namespace HangStudent
 
 
         //========================================= Get random word from quizlet link =============================================
-        public string pickLink(SocketMessage msg, string url)
+        public string[] pickLink(SocketMessage msg, string url)
         {
             string word = "";
+            string def = "";
             Random rand = new Random();
 
             List<string> terms = new List<string>();
+            List<string> defs = new List<string>();
 
             string html = "";
             //string url = "https://quizlet.com/76397882/software-engineering-flash-cards/";
@@ -126,32 +128,36 @@ namespace HangStudent
             {
                 html = reader.ReadToEnd();
             }
-
-            Regex re = new Regex("class=\"TermText notranslate lang-en\">(.*?)<");
+            
+            Regex re = new Regex("SetPageTerm-wordText\"><span class=\"TermText notranslate lang-en\">(.*?)<(.*?)SetPageTerm-definitionText\"><span class=\"TermText notranslate lang-en\">(.*?)<");
             MatchCollection matches = re.Matches(html);
             if (matches.Count > 0)
             {
                 foreach (Match match in matches)
                 {
-                    if (match.Groups.Count == 2)
+                    if (match.Groups.Count == 4)
                     {
                         word = match.Groups[1].ToString();
                         if (word.Length <= 25 && !hasIllegalChar(word))
                         {
                             terms.Add(word);
+                            def = match.Groups[3].ToString();
+                            defs.Add(def);
                         }
                     }
                 }
 
                 int val = rand.Next() % terms.Count;
                 word = terms[val].ToLower();
+                def = defs[val];
             }
             else
             {
                 msg.Channel.SendMessageAsync("Error: Cannot find any terms!");
             }
 
-            return word;
+            string[] term = { word, def };
+            return term;
         }
         //=========================================================================================================================
     }
