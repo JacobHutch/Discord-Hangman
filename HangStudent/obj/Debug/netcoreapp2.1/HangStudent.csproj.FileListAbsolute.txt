@@ -33,3 +33,14 @@ C:\Users\jacob\Desktop\Git\Discord-Hangman\HangStudent\obj\Debug\netcoreapp2.1\H
 C:\Users\jacob\Desktop\Git\Discord-Hangman\HangStudent\obj\Debug\netcoreapp2.1\HangStudent.dll
 C:\Users\jacob\Desktop\Git\Discord-Hangman\HangStudent\obj\Debug\netcoreapp2.1\HangStudent.pdb
 C:\Users\jacob\Desktop\Git\Discord-Hangman\HangStudent\obj\Debug\netcoreapp2.1\HangStudent.genruntimeconfig.cache
+C:\Users\Dovahkiin\Desktop\SCHOOL\comsci\CS321\Discord-Hangman\HangStudent\bin\Debug\netcoreapp2.1\HangStudent.deps.json
+C:\Users\Dovahkiin\Desktop\SCHOOL\comsci\CS321\Discord-Hangman\HangStudent\bin\Debug\netcoreapp2.1\HangStudent.runtimeconfig.json
+C:\Users\Dovahkiin\Desktop\SCHOOL\comsci\CS321\Discord-Hangman\HangStudent\bin\Debug\netcoreapp2.1\HangStudent.runtimeconfig.dev.json
+C:\Users\Dovahkiin\Desktop\SCHOOL\comsci\CS321\Discord-Hangman\HangStudent\bin\Debug\netcoreapp2.1\HangStudent.dll
+C:\Users\Dovahkiin\Desktop\SCHOOL\comsci\CS321\Discord-Hangman\HangStudent\bin\Debug\netcoreapp2.1\HangStudent.pdb
+C:\Users\Dovahkiin\Desktop\SCHOOL\comsci\CS321\Discord-Hangman\HangStudent\obj\Debug\netcoreapp2.1\HangStudent.csprojAssemblyReference.cache
+C:\Users\Dovahkiin\Desktop\SCHOOL\comsci\CS321\Discord-Hangman\HangStudent\obj\Debug\netcoreapp2.1\HangStudent.csproj.CoreCompileInputs.cache
+C:\Users\Dovahkiin\Desktop\SCHOOL\comsci\CS321\Discord-Hangman\HangStudent\obj\Debug\netcoreapp2.1\HangStudent.AssemblyInfoInputs.cache
+C:\Users\Dovahkiin\Desktop\SCHOOL\comsci\CS321\Discord-Hangman\HangStudent\obj\Debug\netcoreapp2.1\HangStudent.AssemblyInfo.cs
+C:\Users\Dovahkiin\Desktop\SCHOOL\comsci\CS321\Discord-Hangman\HangStudent\obj\Debug\netcoreapp2.1\HangStudent.dll
+C:\Users\Dovahkiin\Desktop\SCHOOL\comsci\CS321\Discord-Hangman\HangStudent\obj\Debug\netcoreapp2.1\HangStudent.pdb

@@ -145,19 +145,23 @@ namespace HangStudent {
                 }
             }
 
-			//If player exists, print player stats and total, if not just print total stats
-			if (userIndex >= 0)
+            //If player exists, print player stats and total, if not just print total stats
+            if (userIndex >= 0)
 			{
-				channel.SendMessageAsync("**" + stats.players[userIndex].name + " Stats**\n" + "Correct: " + stats.players[userIndex].correct +
+				channel.SendMessageAsync("+++++++++++++++\n" + 
+                    "**" + stats.players[userIndex].name + " Stats**\n" + "Correct: " + stats.players[userIndex].correct +
 					"\nIncorrect: " + stats.players[userIndex].incorrect + "\nScore: " + stats.players[userIndex].score + "\n\n" +
 					"**Total Stats**\n" + "Wins: " + stats.wins + "\nLosses: " + stats.losses +
-					"\nRounds: " + stats.rounds + "\nBest Word: " + stats.bestWord);
+					"\nRounds: " + stats.rounds + "\nBest Word: " + stats.bestWord +
+                    "\n+++++++++++++++");
 			}
 			else
 			{
-				channel.SendMessageAsync("**Total Stats**\n" + "Wins: " + stats.wins + "\nLosses: " + stats.losses +
-					"\nRounds: " + stats.rounds + "\nBest Word: " + stats.bestWord);
+				channel.SendMessageAsync("+++++++++++++++\n" + 
+                    "**Total Stats**\n" + "Wins: " + stats.wins + "\nLosses: " + stats.losses +
+					"\nRounds: " + stats.rounds + "\nBest Word: " + stats.bestWord +
+                    "\n+++++++++++++++");
 			}
-		}
+        }
 	}
 }

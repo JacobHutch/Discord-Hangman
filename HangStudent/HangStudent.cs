@@ -25,7 +25,7 @@ namespace HangStudent
             _client.MessageReceived += MessageHandler;
             _client.Log += Log;
 
-            string token = "NzYyODM0MDEzMDkzNzU2OTUy.X3u6iQ.BpIPlyoNUJFEXw_FQLrqu5hzMwE";
+            string token = "NzYyODM0MDEzMDkzNzU2OTUy.X3u6iQ.BSY6C-_vSd8J29bgeTgEfLrBydk";
             //string token = "NzU1MTk0NTU4MDYwNTYwNDI0.X1_vvQ.KfW_8mcgZ8R1SFDGr2WG0YX2U2Q";
 
             await _client.LoginAsync(TokenType.Bot, token);
